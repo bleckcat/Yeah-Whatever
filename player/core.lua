@@ -1,4 +1,5 @@
-require("animation_core")
+require("animation.core")
+require("player.movement")
 
 local player_sprites_table = {
     [1] = love.graphics.newImage("sprites/characters/2 Punk/Punk_idle.png"),
@@ -17,7 +18,7 @@ function love.load()
     player.hp = 15
     player.strength = 20
     player.magic = 25
-    player.move_speed = 1
+    player.move_speed = 2
     player.is_moving = false
 
     player.idle = animateSprite(player_sprites_table[1])
@@ -34,32 +35,7 @@ function love.update(dt)
     if player.animation.currentTime >= player.animation.duration then
         player.animation.currentTime = player.animation.currentTime - player.animation.duration
     end
-
-    player.is_moving = false
-    if love.keyboard.isDown("d") then
-        player.is_moving = true
-        player.animation.side = 1
-        player.x = player.x + player.move_speed
-    end
-    if love.keyboard.isDown("a") then
-        player.is_moving = true
-        player.animation.side = -1
-        player.x = player.x - player.move_speed
-    end
-    if love.keyboard.isDown("w") then
-        player.is_moving = true
-        player.y = player.y - player.move_speed
-    end
-    if love.keyboard.isDown("s") then
-        player.is_moving = true
-        player.y = player.y + player.move_speed
-    end
-
-    if player.is_moving then
-        player.animation = player.run
-    else
-        player.animation = player.idle
-    end
+    run(player, dt)
 end
 
 function love.draw()
