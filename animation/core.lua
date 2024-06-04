@@ -5,7 +5,8 @@ function animateSprite(image)
     animation.animationFrames = image:getWidth() / divisionRest
     animation.spriteSheet = image;
     animation.quads = {};
-    animation.duration = duration or 1
+    animation.duration = 1
+    animation.speedMultiplier = 1
     animation.currentTime = 0
     animation.side = 1
 
@@ -15,4 +16,11 @@ function animateSprite(image)
     end
 
     return animation
+end
+
+function animateFramesDeltaTime(entity, dt)
+    entity.animation.currentTime = entity.animation.currentTime + dt * entity.animation.speedMultiplier
+    if entity.animation.currentTime >= entity.animation.duration then
+        entity.animation.currentTime = entity.animation.currentTime - entity.animation.duration
+    end
 end

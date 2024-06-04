@@ -1,5 +1,6 @@
-function run(player, dt)
+function actions(player, dt)
     player.is_moving = false
+
     if love.keyboard.isDown("d") then
         player.is_moving = true
         player.animation.side = 1
@@ -19,9 +20,15 @@ function run(player, dt)
         player.y = player.y + player.move_speed
     end
 
-    if player.is_moving then
-        player.animation = player.run
+    if player.is_hurt then
+        if player.when_got_hurt + 1 < love.timer.getTime() then
+            player.is_hurt = false
+        end
     else
-        player.animation = player.idle
+        if player.is_moving then
+            player.animation = player.run
+        else
+            player.animation = player.idle
+        end
     end
 end
